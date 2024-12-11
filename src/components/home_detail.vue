@@ -57,8 +57,8 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                           <li><a v-on:click="item_edit(item)" class="dropdown-item" type="button"><i
                                 class="bi bi-pencil-fill me-2" style="color:cornflowerblue;"></i> แก้ไข </a></li>
-                          <li><a class="dropdown-item" type="button"><i class="bi bi-eye-slash-fill me-2"
-                                style="color: darkgrey;"></i>ซ่อน</a></li>
+                          <!-- <li><a class="dropdown-item" type="button"><i class="bi bi-eye-slash-fill me-2"
+                                style="color: darkgrey;"></i>ซ่อน</a></li> -->
                           <li><a v-on:click="item_delead(item)" class="dropdown-item" type="button"><i
                                 class="bi bi-trash3-fill me-2" style="color:crimson"></i>ลบ</a></li>
                         </ul>
