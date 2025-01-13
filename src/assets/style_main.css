@@ -203,7 +203,7 @@
 
 
 .card-filter{
-  border-color: hsla(102, 100%, 17%, 0.26);
+  border-color: hsla(102, 100%, 17%, 0);
   border-width: 1px;
   padding-block: 20px ;
   /* width: 239px; */
@@ -352,7 +352,7 @@
 }
 
 
-.icon-item {
+.item-top-right {
   position: absolute;
   padding-inline: 5px;
   padding-block: 0px;

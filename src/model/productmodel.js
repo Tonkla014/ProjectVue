@@ -19,3 +19,8 @@ export const categories = {
     ],
     select:false
 }
+
+export const filter = {
+  searchbox:"",
+  selectbox: categories,
+}

@@ -1,15 +1,12 @@
 <template>
   <div class="mt-1 mb-1">
-
     <div class="card card-filter " :class="{ 'p-0': check_add }">
       <div class="container">
-
-
-        <form v-if="mode_in == 'home'" class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form @submit.prevent="FilterActive" v-on:change="FilterActive">
+          <div  v-if="mode_in == 'home'" class="d-flex" role="search">
+          <input class="form-control me-2" type="search" v-model="filtermodel.searchbox" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
-        </form>
-
+        </div>
         <!-- <div v-if="mode_in == 'home'" class="overflow-auto"style=" height: 170px;" > -->
         <div class="accordion mt-1" :style="{ 'overflow': check_overflow, height: check_height + 'px' }"
           id="accordionExample">
@@ -40,7 +37,7 @@
             </div>
           </div>
         </div>
-
+      </form>
       </div>
 
       <!-- </div> -->
@@ -52,7 +49,8 @@
 
 <script>
 import axios from "axios";
-import { categories } from "../model/porductadd"
+import { categories } from "../model/productmodel"
+import { filter } from "../model/productmodel"
 
 export default {
   name: 'filter_item',
@@ -71,6 +69,7 @@ export default {
     return {
       datafilter: [],
       categories: categories,
+      filtermodel:filter,
       selected: [],
       allSelected: false,
       indeterminate: false,
@@ -114,9 +113,6 @@ export default {
 
         });
       }
-
-
-
     },
     toggledetail(checked) {
 
@@ -129,9 +125,13 @@ export default {
             }
           });
         });
-        this.$emit("CB_category_add", checked);
+        this.$emit("CB_category_add", checked); // use in ADDproduct
       }
 
+    },
+    FilterActive(){
+        this.filtermodel.selectbox = this.categories
+        this.$emit("CB_home", this.filtermodel);
     }
 
   },

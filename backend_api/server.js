@@ -1,4 +1,4 @@
-// server.js
+// route.js
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -169,6 +169,35 @@ app.post('/api/ItemDelead', async (req, res) => {
     });
   }
 });
+
+
+app.post('/api/filterData', async (req, res) => {
+  try {
+    const datafilter = req.body;
+    const category = [];
+    datafilter.selectbox.forEach(element => {
+      if (element.select == true) {
+        element.items.forEach(c => {
+          if (c.select == true) {
+            category.push(c.name);
+          }
+        });
+      }
+    });
+    const query = {
+      $or: [
+        { p_name: datafilter.searchbox },
+        { p_categories: { $in: category } }
+      ]
+    };
+    data = await product.find(query);
+    res.json(data)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+});
+
+app.use('/picture', express.static('C:/Users/piriy/farmsyai/backend_api/picture'));
 
 
 // ตั้งค่าให้ server ทำงานที่ port 3000

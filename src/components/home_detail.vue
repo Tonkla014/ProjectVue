@@ -42,7 +42,7 @@
             <!-- Filter and Content Section -->
             <div class="row">
               <div class="col-xs-12 col-sm-3 col-xl-3 filter-section">
-                <filter_data :mode="mode_filter" />
+                <filter_data :mode="mode_filter" @CB_home="Filter" />
               </div>
               <div class="col-xs-12 col-sm-9 col-xl-9 content-section">
                 <div class="row row-cols-1 row-cols-md-4 g-4">
@@ -50,7 +50,7 @@
                     <div class="card card-item">
                       <!-- dropdown ของไอเทม -->
                       <div class="dropdown">
-                        <button type="button" class="icon-item btn btn-light" id="dropdownMenuButton1"
+                        <button type="button" class="item-top-right btn btn-light" id="dropdownMenuButton1"
                           data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="bi bi-list"></i>
                         </button>
@@ -63,12 +63,11 @@
                                 class="bi bi-trash3-fill me-2" style="color:crimson"></i>ลบ</a></li>
                         </ul>
                       </div>
-
-
                       <!-- <img v-for="pic in splitedList(item.p_image)"  :src="'/backend_api/picture/'+pic" class="card-img-top" alt="..."> -->
+                     <div>
                       <div :id="'carouselExampleIndicators' + item._id" class="carousel slide">
                         <div class="carousel-inner">
-                          <div v-for="pic in splitedList(item.p_image)" class="carousel-item active">
+                          <div  v-for="pic in splitedList(item.p_image)"  type="button" v-on:click="item_detail(item)" class="carousel-item active">
                             <img :src="'/backend_api/picture/' + pic" class="d-block w-100 imgitems">
                           </div>
                         </div>
@@ -83,13 +82,14 @@
                           <span class="visually-hidden">Next</span>
                         </button>
                       </div>
-                      <div class="card-body">
+                      <div class="card-body" type="button" v-on:click="item_detail(item)">
                         <p class="card-text">
-                          {{ item.p_name }}
-                          <br>
-                          {{ item.p_price }}
+                        <h5> {{ item.p_name }}</h5> 
+                          <!-- <br> -->
+                          {{ item.p_price }} บาท/กก
                         </p>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -123,7 +123,7 @@ import axios from "axios";
 import { ref } from 'vue'
 import product_add from "../components/product_add.vue";
 import filter_data from "../components/filterproduct.vue"
-import { data_products } from "../model/porductadd"
+import { data_products } from "../model/productmodel"
 // import { echo } from 'shelljs';
 
 export default {
@@ -137,7 +137,6 @@ export default {
       data_detail: [],
       products: data_products
     }
-
   },
   created() {
     this.itemshop();
@@ -166,7 +165,6 @@ export default {
       try{
       const jsData = JSON.stringify(data)
       // เพิ่มข้อมูลทั่วไปลงใน FormData
-      
       const config = {
         headers: {
            'Content-Type': 'application/json'
@@ -174,27 +172,46 @@ export default {
       };
       let apiURL = 'http://localhost:3000/api/ItemDelead';
       const response = await axios.post(apiURL, jsData,config);
-      
         this.$swal('ลบสำเร็จ')
         await this.itemshop()
-    
-     
     }catch{
       console.error('Error:', error);
       this.$swal('เกิดข้อผิดพลาด');
     }
     },
     call_productsadd(data) {
-
       this.modal_action = data;
       // console.log(data)
-
-
+      this.itemshop();
+    },
+    item_detail(data){
+      this.data_detail =data
+      this.mode_actionitem = "view"
+      this.modal_action = true;
     },
     splitedList(imageString) {
       if (!imageString) return []; // Handle empty or null string
       return imageString.split("||").filter(img => img.trim() !== "");
       // Remove any empty strings caused by trailing `||`
+    },
+    async Filter(data){
+     try {
+      const jsData = JSON.stringify(data)
+      // เพิ่มข้อมูลทั่วไปลงใน FormDat
+      
+      const config = {
+        headers: {
+           'Content-Type': 'application/json'
+        } 
+      };
+      let apiURL = 'http://localhost:3000/api/filterData';
+      const response = await axios.post(apiURL, jsData,config);
+
+        this.products = response.data
+        //console.log(this.products)
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, components: { product_add, filter_data }
 
