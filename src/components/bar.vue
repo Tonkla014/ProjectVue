@@ -16,16 +16,10 @@
               <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                  </li>
-                  <!-- <li class="nav-item" >
-                    <a class="nav-link" href="#">รายงานอุณหภูมิ</a>
-                  </li> -->
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">Shop</a>
+                    <a  type="button" class="nav-link active btn" v-on:click="onclick('Home')" aria-current="page">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a type="button" class="nav-link btn" v-on:click="onclick('Dashboard')">Dashboard</a>
                   </li>
                   <!-- <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -50,5 +44,24 @@
 <script>
 export default {
   name: 'Bar',
+  created() {
+    this.onclick("");
+
+  },
+  methods:{
+    onclick(data){
+      switch (data)
+      {
+        case 'Home':
+        this.$router.push("/");
+          console.log("Home ")
+          break ;
+        case 'Dashboard':
+          this.$router.push("Dashboard");
+          console.log("test_dashboard")
+          break ;
+     }
+    }
+  }
 };
 </script>

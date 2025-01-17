@@ -72,12 +72,14 @@
                         <div v-for="(image, index) in previewImages" :key="index" style="margin: 5px;">
 
 
-                            <div v-if="this.mode_actionitem == 'edit'" style="position: relative;">
+                            <!-- <div v-if="this.mode_actionitem == 'edit'" style="position: relative;">
                                 <i type="button" v-on:click="DeleteImages(index)"
                                     class="item-top-right bi bi-x-circle-fill"></i>
-                            </div>
+                            </div> -->
 
-                            <img :src="image" alt="Preview"
+                            <img v-if="mode_actionitem =='add'||edit_image==true" :src="image" alt="Preview"
+                                style="max-width: 150px; border: 1px solid #ddd; border-radius: 5px;height: 130px;" />
+                            <img v-if="mode_actionitem !='add'&&edit_image==false" :src="'/backend_api/picture/' +image" alt="Preview"
                                 style="max-width: 150px; border: 1px solid #ddd; border-radius: 5px;height: 130px;" />
                         </div>
 
@@ -128,6 +130,7 @@ export default {
             view: false,
             edit_ca: true,
             heightselect: 0,
+            edit_image:false,
         };
 
     },
@@ -147,6 +150,7 @@ export default {
             this.$emit("callback_data", this.modal_action);
         },
         async submitdata(data) {
+            try{
             const formData = new FormData();
             // เพิ่มข้อมูลทั่วไปลงใน FormData
             formData.append('model', JSON.stringify(data));
@@ -167,10 +171,18 @@ export default {
             const response = await axios.post(apiURL, formData, config);
 
             this.modal_action = false;
-            // console.log('Upload success:', response.data);
-
+            console.log('Upload success:', response.data);
+            if(response.data.success)
+            {
+                this.$swal('บันทึกสำเร็จ')
+            }
+        }catch{
+            console.error('Error:', error);
+            this.$swal(error)
+        }
         },
         async Update(data) {
+            try{
             const formData = new FormData();
             // เพิ่มข้อมูลทั่วไปลงใน FormData
             formData.append('model', JSON.stringify(data));
@@ -190,7 +202,15 @@ export default {
             let apiURL = 'http://localhost:3000/api/ItemUpdate';
             const response = await axios.put(apiURL, formData, config);
             this.modal_action = false;
-
+            console.log(response)
+            if(response.data.success)
+            {
+                this.$swal('แก้ไขสำเร็จ')
+            }
+        }catch{
+            console.error('Error:', error);
+            this.$swal(error)
+        }
         },
         category_add(data) {
             // console.log(data);
@@ -213,6 +233,7 @@ export default {
                 this.name_image += file.name + "||";
             });
             this.local_p.p_image = this.name_image;
+            this.edit_image = true;
         },
         category_add(data) {
             // console.log(data);
@@ -240,8 +261,8 @@ export default {
                 const datasplit = img.split('||')
                 datasplit.forEach(i => {
                     if (i) {
-                        const pathimg = 'http://localhost:3000/picture/' + i
-                        this.previewImages.push(pathimg)
+                        // const pathimg = 'http://localhost:3000/picture/' + i
+                        this.previewImages.push(i)
                     }
                 });
 

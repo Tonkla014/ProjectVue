@@ -24,15 +24,15 @@
                           เพิ่มสินค้า
                         </div>
                       </div>
-                      <div class="nav-item p-1">
-                        <div class="card-detail shadow-sm btn btn-light">สินค้าแนะนำ</div>
-                      </div>
-                      <div class="nav-item p-1">
+                      <!-- <div class="nav-item p-1">
+                        <div  class="card-detail shadow-sm btn btn-light">Dashboad</div>
+                      </div> -->
+                      <!-- <div class="nav-item p-1">
                         <div class="card-detail shadow-sm btn btn-light">ข้อมูลแนะนำ</div>
                       </div>
                       <div class="nav-item p-1">
                         <div class="card-detail shadow-sm btn btn-light">ติดต่อเรา</div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -46,7 +46,7 @@
               </div>
               <div class="col-xs-12 col-sm-9 col-xl-9 content-section">
                 <div class="row row-cols-1 row-cols-md-4 g-4">
-                  <div v-for="item in products" :key="item._id" class="col d-flex justify-content-center ">
+                  <div v-if="products != null && !loadingscreen" v-for="item in products" :key="item._id" class="col d-flex justify-content-center ">
                     <div class="card card-item">
                       <!-- dropdown ของไอเทม -->
                       <div class="dropdown">
@@ -67,7 +67,7 @@
                      <div>
                       <div :id="'carouselExampleIndicators' + item._id" class="carousel slide">
                         <div class="carousel-inner">
-                          <div  v-for="pic in splitedList(item.p_image)"  type="button" v-on:click="item_detail(item)" class="carousel-item active">
+                          <div  v-for="(pic, index) in splitedList(item.p_image)"  type="button" v-on:click="item_detail(item)" :class="index === 0? 'carousel-item active':'carousel-item'">
                             <img :src="'/backend_api/picture/' + pic" class="d-block w-100 imgitems">
                           </div>
                         </div>
@@ -83,11 +83,12 @@
                         </button>
                       </div>
                       <div class="card-body" type="button" v-on:click="item_detail(item)">
-                        <p class="card-text">
+                        <div class="card-text">
                         <h5> {{ item.p_name }}</h5> 
                           <!-- <br> -->
+
                           {{ item.p_price }} บาท/กก
-                        </p>
+                        </div>
                       </div>
                     </div>
                     </div>
@@ -135,7 +136,8 @@ export default {
       mode_filter: "home",
       mode_actionitem: "",
       data_detail: [],
-      products: data_products
+      products: data_products,
+      loadingscreen:true
     }
   },
   created() {
@@ -147,9 +149,10 @@ export default {
       try {
         const response = await axios.get("http://localhost:3000/api/product");
         this.products = response.data
-        //console.log(this.products)
+        this.loadingscreen = false
       } catch (error) {
         console.log(error);
+        this.products=null;
       }
     },
     item_add(data) {
@@ -191,7 +194,8 @@ export default {
     },
     splitedList(imageString) {
       if (!imageString) return []; // Handle empty or null string
-      return imageString.split("||").filter(img => img.trim() !== "");
+      let imagelist = imageString.split("||").filter(img => img.trim() !== "")
+      return imagelist;
       // Remove any empty strings caused by trailing `||`
     },
     async Filter(data){

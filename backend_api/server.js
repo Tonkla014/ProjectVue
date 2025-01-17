@@ -1,7 +1,7 @@
 // route.js
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
+const cors = require("npm install cors");
 const connectdb = require("./dbmain");
 const app = express();
 const multer = require('multer');

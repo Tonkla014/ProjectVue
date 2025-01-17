@@ -10,7 +10,7 @@
         <!-- <div v-if="mode_in == 'home'" class="overflow-auto"style=" height: 170px;" > -->
         <div class="accordion mt-1" :style="{ 'overflow': check_overflow, height: check_height + 'px' }"
           id="accordionExample">
-          <div v-for="cg in categories" :key="cg.category" class="accordion-item">
+          <div v-if="categories != null" v-for="cg in categories" :key="cg.category" class="accordion-item">
             <h2 class="accordion-header">
               <div class="input-group">
                 <div class="input-group-text">
@@ -96,6 +96,7 @@ export default {
         //  console.log(this.categories);
       } catch (error) {
         console.log(error);
+        this.categories = null
       }
     },
     toggleAll(checked) {

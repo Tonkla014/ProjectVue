@@ -21,6 +21,7 @@ export default {
 
 <style>
 @import './assets/style_main.css';
+
 #app {
   font-family: "Kanit", serif;
   font-weight: 400;
