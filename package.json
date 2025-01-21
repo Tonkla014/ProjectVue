@@ -16,6 +16,7 @@
     "bootstrap-select": "^1.13.18",
     "bootstrap-vue": "^2.23.1",
     "chart.js": "^4.4.7",
+    "cors": "^2.8.5",
     "express": "^4.21.1",
     "mongoose": "^8.8.0",
     "vue": "^3.5.12",

@@ -35,10 +35,7 @@
 }
 
 .card-groupmenu {
-  /* height: 250px; */
   border-color: #ffffff22;
-  /* padding-inline: 500px;
-  padding-block: 1px; */
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -365,3 +362,21 @@
 }
 
 
+.card-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 350px;
+  width:450px;
+  border-radius: 5px;
+  /* text-align: center; */
+  background-color: #ffffff;
+}
+
+.item-center{
+width: 100%;
+
+}
