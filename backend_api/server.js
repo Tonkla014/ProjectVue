@@ -127,8 +127,11 @@ app.get('/api/filter', async (req, res) => {
 
   try {
     const data = await category.find({});
-    // console.log(data)
-    res.json(data)
+console.log('MongoDB connection state:', mongoose.connection.readyState);
+console.log('Database name:', mongoose.connection.name);
+console.log('Collections:', Object.keys(mongoose.connection.collections));
+console.log('Category model collection:', category.collection.name);
+    res.json(data);
   }
   catch (error) {
     res.status(500).json({ message: error.message })
