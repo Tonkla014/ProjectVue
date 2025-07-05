@@ -1,15 +1,39 @@
-const mongoose = require("mongoose");
-require('dotenv').config();
-const servername = process.env.SERVERNAME;
+// const mongoose = require("mongoose");
+// require('dotenv').config();
+// const servername = process.env.SERVERNAME;
 
-const connectDB = async () => {
-    console.log('SERVERNAME:', servername);
-    try {
-        await mongoose.connect(servername);
-        console.log("db connect");
-    } catch (error) {
-        console.log(error.message);
-    }
-};
+// const connectDB = async () => {
+//     console.log('SERVERNAME:', servername);
+//     try {
+//         await mongoose.connect(servername);
+//         console.log("db connect");
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// };
 
-module.exports = connectDB;
+// module.exports = {connectDB};
+
+
+const { MongoClient } = require('mongodb');
+// or as an es module:
+// import { MongoClient } from 'mongodb'
+
+// Connection URL
+const url = process.env.SERVERNAME;
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = 'myProject';
+
+async function main() {
+  // Use connect method to connect to the server
+  await client.connect();
+  console.log('Connected successfully to server');
+  const db = client.db(dbName);
+  const collection = db.collection('documents');
+
+  // the following code examples can be pasted here...
+
+  return 'done.';
+}
